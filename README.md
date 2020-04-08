@@ -10,7 +10,7 @@ Docker Gitea Service
 
 * [Requirements](#requirements)
 * [Quick start](#quick-start)
-* [Additional steps](#addtional-steps)
+* [Additional steps](#additional-steps)
   - [Create git user](#create-git-user)
   - [SSH passthrough](#ssh-passthrough)
 * [Security](#security-note)
@@ -32,9 +32,11 @@ Here are the basic requirements:
   - SSH access to the server
   - Storage space on the server for the service and repository data
 * A domain with an ``A`` record pointing to the server IP (Configured at DNS provider)
-  - Name | TTL | Class | Type | Record
-  - --- | --- | --- | --- | ---
-  - `git.example.com` | `1200` | `IN` | `A` | `$IP`
+
+Name | TTL | Class | Type | Record
+--- | --- | --- | --- | ---
+`git.example.com` | `1200` | `IN` | `A` | `$IP`
+
 * An email address (e.g. gitea@example.com) configured at your domain (If you want the Gitea service to be able to send email)
   - Make sure to note down the outgoing (SMTP) mail server information (e.g. smtp.example.com:465)
 
@@ -225,33 +227,29 @@ Named
 
 ### Advanced configuration
 
-To make additional configuration changes first shut down the containers
-
-``docker-compose down``
+To make additional configuration changes first shut down the containers with `docker-compose down`
 
 * Edit ``docker-compose.yml`` to update the Docker service
 * Edit ``/var/lib/gitea/gitea/conf/app.ini`` to update the Gitea configuration
 * Edit ``nginx.tmpl`` to update the Nginx configuration
 
-Restart the containers
-
-``docker-compose up -d``
+Restart the containers with `docker-compose up -d`
 
 ## Documentation
 
-* [Gitea Website]:(https://gitea.io)
-* [Gitea Docker Installation]:(https://docs.gitea.io/en-us/install-with-docker)
-* [Docker]:(https://docs.docker.com)
-* [Docker Compose]:(https://docs.docker.com/compose)
-* [Gitea Repo]:(https://github.com/go-gitea/gitea)
-* [Gitea Image]:(https://hub.docker.com/r/gitea/gitea)
-* [Nginx Repo]:(https://github.com/nginx/nginx)
-* [Nginx Image]:(https://hub.docker.com/\_/nginx)
-* [Docker Repo]:(https://github.com/jwilder/docker-gen)
-* [docker-gen Repo]:(https://github.com/jwilder/docker-gen)
-* [docker-gen Image]:(https://hub.docker.com/r/jwilder/docker-gen)
-* [docker-letsencrypt-nginx-proxy-companion Repo]:(https://github.com/nginx-proxy/docker-letsencrypt-nginx-proxy-companion)
-* [letsencrypt-nginx-proxy-companion Image]:(https://hub.docker.com/r/jrcs/letsencrypt-nginx-proxy-companion)
+* [Gitea Website](https://gitea.io)
+* [Gitea Docker Installation](https://docs.gitea.io/en-us/install-with-docker)
+* [Docker](https://docs.docker.com)
+* [Docker Compose](https://docs.docker.com/compose)
+* [Gitea Repo](https://github.com/go-gitea/gitea)
+* [Gitea Image](https://hub.docker.com/r/gitea/gitea)
+* [Nginx Repo](https://github.com/nginx/nginx)
+* [Nginx Image](https://hub.docker.com/\_/nginx)
+* [Docker Repo](https://github.com/jwilder/docker-gen)
+* [docker-gen Repo](https://github.com/jwilder/docker-gen)
+* [docker-gen Image](https://hub.docker.com/r/jwilder/docker-gen)
+* [docker-letsencrypt-nginx-proxy-companion Repo](https://github.com/nginx-proxy/docker-letsencrypt-nginx-proxy-companion)
+* [letsencrypt-nginx-proxy-companion Image](https://hub.docker.com/r/jrcs/letsencrypt-nginx-proxy-companion)
 * If you find any problems please fill out an [issue](https://github.com/jwobith/docker-gitea/issues/new). Thank you!
 
 ## Contributing
@@ -261,5 +259,4 @@ Do you want to help contribute? Check out the [contributing documentation](CONTR
 ## License
 
 This project is licensed under the MIT License.
-See the [LICENSE](LICENSE)
-file for the full license text.
+See the [LICENSE](LICENSE) file for the full license text.

@@ -1,11 +1,5 @@
 docker-gitea
 ============
-<<<<<<< HEAD
-
-Docker Gitea Service
---------------------
-=======
->>>>>>> development
 
 Docker Gitea Service
 --------------------

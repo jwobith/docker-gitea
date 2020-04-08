@@ -59,7 +59,7 @@ sudo curl -L "https://github.com/docker/compose/releases/download/1.25.4/docker-
 sudo chmod +x /usr/local/bin/docker-compose
 ```
 
-Create ``docker`` group and add current user to group (or add the user you would like to run docker).
+Create `docker` group and add current user to group (or add the user you would like to run docker).
 
 ```shell
 # Create docker group
@@ -69,7 +69,13 @@ sudo groupadd docker
 sudo usermod -aG docker $USER
 ```
 
-Setup the [.env](#environment) file for your desired configuration.
+Create the gitea data directory.
+
+```shell
+sudo mkdir -p /var/lib/gitea
+```
+
+Check the docker service status and run a test container.
 
 ```shell
 # Verify that docker service is running
@@ -77,16 +83,21 @@ sudo systemctl status docker
 
 # Run a test container
 docker run hello-world
+```
 
+Clone this repository and setup the [.env](#environment) file for your desired configuration.
+
+```
 # Clone this repository to your computer
 git clone https://github.com/jwobith/docker-gitea && cd docker-gitea
 
 # Create a `.env` file by copying and adjusting `env.sample` for configuration.
 cp env.sample .env
+```
 
-# Create required gitea data directories
-sudo mkdir -p /var/lib/gitea
+Start the docker service
 
+```shell
 # Start docker containers
 docker-compose up -d
 
@@ -103,6 +114,7 @@ Create a new `git` user on the host machine with UID and GID matching the `git` 
 ```shell
 # Create git user
 adduser git
+
 # Make sure user has UID and GID 1000
 usermod -u 1000 -g 1000 git
 ```
@@ -122,28 +134,35 @@ Make the file `/app/gitea/gitea` excecutable.
 
 Generate an SSH key for the `git` user and create a symlink between the container and host `authorized_keys`.
 
+To generate an RSA key:
+
 ```shell
-# To generate an RSA key
 sudo -u git ssh-keygen -t rsa -b 4096 -C "Gitea Host Key"
 ```
+
+Alternately, to generate an ED25519 key:
+
 ```shell
-# Alternately, to generate an ED25519 key 
 sudo -u git ssh-keygen -t ed25519 -C "Gitea Host Key"
 ```
+
+Create a symlink between container `authorized_keys` and host git user `authorized_keys.`
+
 ```shell
-# Create a symlink between container `authorized_keys` and host git user `authorized_keys`
 ln -s /var/lib/gitea/git/.ssh/authorized_keys /home/git/.ssh/authorized_keys
 ```
 
-Echo the `git` user key into the `authorized_keys` file
+Echo the `git` user key into the `authorized_keys` file.
+
+For an RSA key:
 
 ```shell
-# For an RSA key
 echo "no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty $(cat /home/git/.ssh/id_rsa.pub)" >> /var/lib/gitea/git/.ssh/authorized_keys
 ```
 
+For an ED25519 key:
+
 ```shell
-# For an ED25519 key
 echo "no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty $(cat /home/git/.ssh/id_ed25519.pub)" >> /var/lib/gitea/git/.ssh/authorized_keys
 ```
 
@@ -158,7 +177,23 @@ The first time you go to the site Gitea will guide you through the installation 
 
 ## Security
 
-On the host machine, make sure to use a strong user password and strong ssh keys.  When you create the gitea administrator for the first time use a strong password as well.
+On the host machine, make sure to use a strong user password and strong SSH keys.  When you create the Gitea administrator for the first time use a strong password as well.
+
+### SSH
+
+Disable root SSH access on the host machine.  Edit `/etc/ssh/sshd_config` by changing the following line:
+
+```shell
+# Old sshd_config
+PermitRootLogin yes
+
+# New sshd_config
+PermitRootLogin no
+```
+
+NOTE: If you are currently remotely accessing the machine as root or have edited the `/etc/ssh/sshd_config` incorrectly, the next command may cause you to lose connection to the server.  Make sure you are connected via SSH as a non-root user.
+
+Restart the ssh server with `sudo service ssh restart`.
 
 ### External ports
 
@@ -268,7 +303,7 @@ Restart the containers with `docker-compose up -d`
 
 ## Contributing
 
-Do you want to help contribute? Check out the [contributing documentation](CONTRIBUTING.md).
+Do you want to help contribute to this repoistory? Check out the [contributing documentation](CONTRIBUTING.md).
 
 ## License
 

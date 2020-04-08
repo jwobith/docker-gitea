@@ -4,7 +4,7 @@ docker-gitea
 Docker Gitea Service
 --------------------
 
-[Gitea](https://gitea.io) is a self-hosted git service written in Go that is comparable to other self-hosted git projects like [Gitlab](https://about.gitlab.com/install/?version=ce). It provides an interface that is similar to [Github](https://github.com) but a solution that you host yourself. While it does not currently have more complex features like built-in CI it is a lightweight and functional solution. This repository contains the necessary configuration to run a full Gitea service in [Docker](https://docs.docker.com) using [Docker Compose](https://docs.docker.com/compose) and the capability to auto renew SSL certificates with [Let's Encrypt](https://www.letsencrypt.org).
+[Gitea](https://gitea.io) is a self-hosted git service written in Go that is comparable to other self-hosted git projects like [Gitlab](https://about.gitlab.com/install/?version=ce). It provides an interface that is similar to [Github](https://github.com) but a solution that you host yourself. While it does not currently have more complex features like built-in CI it is a lightweight and functional solution to host your own public and private repositories. This repository contains the necessary configuration to run a full Gitea service in [Docker](https://docs.docker.com) using [Docker Compose](https://docs.docker.com/compose) and the capability to auto renew SSL certificates with [Let's Encrypt](https://www.letsencrypt.org).
 
 ## Table of contents
 
@@ -41,9 +41,7 @@ Name | TTL | Class | Type | Record
 * An email address (e.g. gitea@example.com) configured at your domain (If you want the Gitea service to be able to send email)
   - Make sure to note down the outgoing (SMTP) mail server information (e.g. smtp.example.com:465)
 
-This guide assumes you are using Debian/Ubuntu but it can be adapted to other variations of linux. 
-
-If you would like to add additional configuration options or help automate some of the setup see [contributing](#contributing) below.
+This guide assumes you are using Debian/Ubuntu but it can be adapted to other variations of linux. If you would like to add additional configuration options or help automate some of the setup see [contributing](#contributing) below.
 
 ## Quick start
 

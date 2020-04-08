@@ -104,7 +104,7 @@ docker-compose up -d
 docker ps
 ```
 
-## Addtional Steps
+## Additional steps
 
 ### Create git user
 
@@ -119,6 +119,8 @@ usermod -u 1000 -g 1000 git
 ```
 
 ### SSH passthrough
+
+A passthrough is configured to allow SSH connection to both the host and the container on the standard port 22. It is possible to explicitly set a different port for either in the `docker-compose.yml`, however then all future connections will require remembering a custom port for one of the devices so the passthrough is the recommended setup.
 
 Create the file `/app/gitea/gitea` with the following contents:
 
@@ -145,7 +147,7 @@ Alternately, to generate an ED25519 key:
 sudo -u git ssh-keygen -t ed25519 -C "Gitea Host Key"
 ```
 
-Create a symlink between container `authorized_keys` and host git user `authorized_keys.`
+Create a symlink between the container `authorized_keys` and the host git user `authorized_keys.`
 
 ```shell
 ln -s /var/lib/gitea/git/.ssh/authorized_keys /home/git/.ssh/authorized_keys
@@ -293,7 +295,6 @@ Restart the containers with `docker-compose up -d`
 * [Gitea Image](https://hub.docker.com/r/gitea/gitea)
 * [Nginx Repo](https://github.com/nginx/nginx)
 * [Nginx Image](https://hub.docker.com/\_/nginx)
-* [Docker Repo](https://github.com/jwilder/docker-gen)
 * [docker-gen Repo](https://github.com/jwilder/docker-gen)
 * [docker-gen Image](https://hub.docker.com/r/jwilder/docker-gen)
 * [docker-letsencrypt-nginx-proxy-companion Repo](https://github.com/nginx-proxy/docker-letsencrypt-nginx-proxy-companion)

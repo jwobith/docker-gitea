@@ -14,6 +14,7 @@ Docker Gitea Service
   - [Create git user](#create-git-user)
   - [SSH passthrough](#ssh-passthrough)
 * [Security](#security-note)
+  - [SSH root access](#ssh-root-access)
   - [External ports](#external-ports)
 * [Configuration](#configuration)
   - [Environment](#environment)
@@ -132,7 +133,7 @@ Make the file `/app/gitea/gitea` excecutable.
 
 `sudo chmod +x /app/gitea/gitea`
 
-Generate an SSH key for the `git` user and create a symlink between the container and host `authorized_keys`.
+Generate an SSH key for the `git` user. When prompted for a password you can leave it empty.
 
 To generate an RSA key:
 
@@ -173,15 +174,15 @@ The first time you go to the site Gitea will guide you through the installation 
 * Create an administrator user with a strong password.
 * Enter the email address and password for the Gitea server email account.
 * Enter the correct mail server information.
-* Most of the remaining items should stay at the default setting.
+* The remaining items should stay at the default setting.
 
 ## Security
 
-On the host machine, make sure to use a strong user password and strong SSH keys.  When you create the Gitea administrator for the first time use a strong password as well.
+On the host machine, make sure to use a strong user password and strong SSH keys. When you create the Gitea administrator for the first time use a strong password as well.
 
-### SSH
+### SSH root access
 
-Disable root SSH access on the host machine.  Edit `/etc/ssh/sshd_config` by changing the following line:
+Disable root SSH access on the host machine. Edit `/etc/ssh/sshd_config` by changing the following line:
 
 ```shell
 # Old sshd_config

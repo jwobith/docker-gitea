@@ -48,39 +48,48 @@ If you would like to add additional configuration options or help automate some 
 
 Install docker and docker-compose.
 
-```
+```shell
 # Install docker
 sudo apt-get install docker
+
 # Install docker-compose
 sudo curl -L "https://github.com/docker/compose/releases/download/1.25.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
 # Make docker-compose executable
 sudo chmod +x /usr/local/bin/docker-compose
 ```
 
 Create ``docker`` group and add current user to group (or add the user you would like to run docker).
 
-```
+```shell
 # Create docker group
 sudo groupadd docker
+
 # Add user to docker group
 sudo usermod -aG docker $USER
 ```
 
 Setup the [.env](#environment) file for your desired configuration.
 
-```
+```shell
 # Verify that docker service is running
 sudo systemctl status docker
+
 # Run a test container
 docker run hello-world
+
 # Clone this repository to your computer
-git clone https://github.com/bitdexgroup/docker-gitea && cd docker-gitea
-# Create a ``.env`` file by copying and adjusting ``env.sample`` for configuration.
+git clone https://github.com/jwobith/docker-gitea && cd docker-gitea
+
+# Create a `.env` file by copying and adjusting `env.sample` for configuration.
 cp env.sample .env
-# Create required ``CONFIG`` directories
+
+# Create required gitea data directories
 sudo mkdir -p /var/lib/gitea
+
 # Start docker containers
 docker-compose up -d
+
 # Verify containers are running
 docker ps
 ```
@@ -89,9 +98,9 @@ docker ps
 
 ### Create git user
 
-Create a new ``git`` user on the host machine with UID and GID matching the ``git`` user inside the Gitea container.
+Create a new `git` user on the host machine with UID and GID matching the `git` user inside the Gitea container.
 
-```
+```shell
 # Create git user
 adduser git
 # Make sure user has UID and GID 1000
@@ -100,40 +109,40 @@ usermod -u 1000 -g 1000 git
 
 ### SSH passthrough
 
-Create the file ``/app/gitea/gitea`` with the following contents:
+Create the file `/app/gitea/gitea` with the following contents:
 
-```
+```shell
 #!/bin/sh
 ssh -p 2222 -o StrictHostKeyChecking=no git@127.0.0.1 "SSH_ORIGINAL_COMMAND=\"$SSH_ORIGINAL_COMMAND\" $0 $@"
 ```
 
-Make the file ``/app/gitea/gitea`` excecutable.
+Make the file `/app/gitea/gitea` excecutable.
 
 `sudo chmod +x /app/gitea/gitea`
 
-Generate an SSH key for the ``git`` user and create a symlink between the container and host ``authorized_keys``.
+Generate an SSH key for the `git` user and create a symlink between the container and host `authorized_keys`.
 
-```
+```shell
 # To generate an RSA key
 sudo -u git ssh-keygen -t rsa -b 4096 -C "Gitea Host Key"
 ```
-```
+```shell
 # Alternately, to generate an ED25519 key 
 sudo -u git ssh-keygen -t ed25519 -C "Gitea Host Key"
 ```
-```
-# Create a symlink between container ``authorized_keys`` and host git user ``authorized_keys``
+```shell
+# Create a symlink between container `authorized_keys` and host git user `authorized_keys`
 ln -s /var/lib/gitea/git/.ssh/authorized_keys /home/git/.ssh/authorized_keys
 ```
 
-Echo the ``git`` user key into the ``authorized_keys`` file
+Echo the `git` user key into the `authorized_keys` file
 
-```
+```shell
 # For an RSA key
 echo "no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty $(cat /home/git/.ssh/id_rsa.pub)" >> /var/lib/gitea/git/.ssh/authorized_keys
 ```
 
-```
+```shell
 # For an ED25519 key
 echo "no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty $(cat /home/git/.ssh/id_ed25519.pub)" >> /var/lib/gitea/git/.ssh/authorized_keys
 ```
@@ -142,7 +151,8 @@ echo "no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty $(cat /hom
 
 The first time you go to the site Gitea will guide you through the installation wizard.
 
-* Enter the email address and password for the Gitea email account
+* Create an administrator user with a strong password.
+* Enter the email address and password for the Gitea server email account.
 * Enter the correct mail server information.
 * Most of the remaining items should stay at the default setting.
 
@@ -160,19 +170,24 @@ If a firewall is configured on the host the following external ports must be ope
 
 On a Debian/Ubuntu server this can be configured using UFW:
 
-```
+```shell
 # Install ufw
 sudo apt-get install ufw
+
 # Enable ufw service
 sudo systemct enable ufw
+
 # Set ufw default to deny all incoming
 sudo ufw default deny incoming
+
 # Set ufw default to allow all outgoing
 sudo ufw default allow outgoing
+
 # Set ufw to allow 80/tcp, 443/tcp, and 22/tcp
 sudo ufw allow 80/tcp
 sudo ufw allow 443/tcp
 sudo ufw allow 22/tcp
+
 # Display status of ufw service
 sudo ufw status verbose
 ```
@@ -181,8 +196,7 @@ sudo ufw status verbose
 
 ### Environment
 
-The configuration is performed via environment variables contained in a ``.env`` file. You
-can copy the provided ``env.sample`` file as a reference.
+The configuration is performed via environment variables contained in a `.env` file. You can copy the provided `env.sample` file as a reference.
 
 Variable | Description | Example
 --- | --- | ---
@@ -229,9 +243,9 @@ Named
 
 To make additional configuration changes first shut down the containers with `docker-compose down`
 
-* Edit ``docker-compose.yml`` to update the Docker service
-* Edit ``/var/lib/gitea/gitea/conf/app.ini`` to update the Gitea configuration
-* Edit ``nginx.tmpl`` to update the Nginx configuration
+* Edit `docker-compose.yml` to update the Docker service
+* Edit `/var/lib/gitea/gitea/conf/app.ini` to update the Gitea configuration
+* Edit `nginx.tmpl` to update the Nginx configuration
 
 Restart the containers with `docker-compose up -d`
 

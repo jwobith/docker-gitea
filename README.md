@@ -4,7 +4,7 @@ docker-gitea
 Docker Gitea Service
 --------------------
 
-[Gitea](https://gitea.io) is a self-hosted git service written in Go. It provides a setup that is similar to [Github](https://github.com) but a solution that you host yourself. This repository contains the necessary configuration to run a full Gitea service in [Docker](https://docs.docker.com) using [Docker Compose](https://docs.docker.com/compose) and the capability to auto renew SSL certificates with [Let's Encrypt](https://www.letsencrypt.org).
+[Gitea](https://gitea.io) is a self-hosted git service written in Go that is comparable to other self-hosted git projects like [Gitlab](https://about.gitlab.com/install/?version=ce). It provides an interface that is similar to [Github](https://github.com) but a solution that you host yourself. While it does not currently have more complex features like built-in CI it is a lightweight and functional solution. This repository contains the necessary configuration to run a full Gitea service in [Docker](https://docs.docker.com) using [Docker Compose](https://docs.docker.com/compose) and the capability to auto renew SSL certificates with [Let's Encrypt](https://www.letsencrypt.org).
 
 ## Table of contents
 
@@ -32,7 +32,7 @@ Here are the basic requirements:
 * An internet connected server or VPS with a static IP address
   - SSH access to the server
   - Storage space on the server for the service and repository data
-* A domain with an ``A`` record pointing to the server IP (Configured at DNS provider)
+* A domain with an `A` record pointing to the server IP (Configured at DNS provider)
 
 Name | TTL | Class | Type | Record
 --- | --- | --- | --- | ---
@@ -304,7 +304,7 @@ Restart the containers with `docker-compose up -d`
 
 ## Contributing
 
-Do you want to help contribute to this repoistory? Check out the [contributing documentation](CONTRIBUTING.md).
+Do you want to help contribute to this repository? Check out the [contributing documentation](CONTRIBUTING.md).
 
 ## License
 

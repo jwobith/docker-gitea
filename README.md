@@ -90,8 +90,8 @@ Clone this repository and setup the [.env](#environment) file for your desired c
 # Clone this repository to your computer
 git clone https://github.com/jwobith/docker-gitea && cd docker-gitea
 
-# Create a `.env` file by copying and adjusting `env.sample` for configuration.
-cp env.sample .env
+# Create a `.env` file by copying and adjusting `.env.sample` for configuration.
+cp .env.sample .env
 ```
 
 Start the docker service
@@ -232,7 +232,7 @@ sudo ufw status verbose
 
 ### Environment
 
-The configuration is performed via environment variables contained in a `.env` file. You can copy the provided `env.sample` file as a reference.
+The configuration is performed via environment variables contained in a `.env` file. You can copy the provided `.env.sample` file as a reference.
 
 Variable | Description | Example
 --- | --- | ---

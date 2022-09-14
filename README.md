@@ -1,44 +1,47 @@
-docker-gitea
-============
+# docker-gitea
 
-Docker Gitea Service
---------------------
+## Docker Gitea Service
 
 [Gitea](https://gitea.io) is a self-hosted git service written in Go that is comparable to other self-hosted git projects like [Gitlab](https://about.gitlab.com/install/?version=ce). It provides an interface that is similar to [Github](https://github.com) but a solution that you host yourself. While it does not currently have more complex features like built-in CI it is a lightweight and functional solution to host your own public and private repositories. This repository contains the necessary configuration to run a full Gitea service in [Docker](https://docs.docker.com) using [Docker Compose](https://docs.docker.com/compose) and the capability to auto renew SSL certificates with [Let's Encrypt](https://www.letsencrypt.org).
 
 ## Table of contents
 
-* [Requirements](#requirements)
-* [Quick start](#quick-start)
-* [Additional steps](#additional-steps)
-  - [Create git user](#create-git-user)
-  - [SSH passthrough](#ssh-passthrough)
-* [Security](#security-note)
-  - [SSH root access](#ssh-root-access)
-  - [External ports](#external-ports)
-* [Configuration](#configuration)
-  - [Environment](#environment)
-  - [Images](#images)
-  - [Containers](#containers)
-  - [Volumes](#volumes)
-  - [Advanced configuration](#advanced-configuration)
-* [Documentation](#documentation)
-* [Contributing](#contributing)
+- [docker-gitea](#docker-gitea)
+  - [Docker Gitea Service](#docker-gitea-service)
+  - [Table of contents](#table-of-contents)
+  - [Requirements](#requirements)
+  - [Quick start](#quick-start)
+  - [Additional steps](#additional-steps)
+    - [Create git user](#create-git-user)
+    - [SSH passthrough](#ssh-passthrough)
+    - [Installation](#installation)
+  - [Security](#security)
+    - [SSH root access](#ssh-root-access)
+    - [External ports](#external-ports)
+  - [Configuration](#configuration)
+    - [Environment](#environment)
+    - [Images](#images)
+    - [Containers](#containers)
+    - [Volumes](#volumes)
+    - [Advanced configuration](#advanced-configuration)
+  - [Documentation](#documentation)
+  - [Contributing](#contributing)
+  - [License](#license)
 
 ## Requirements
 
 Here are the basic requirements:
 
-* An internet connected server or VPS with a static IP address
+- An internet connected server or VPS with a static IP address
   - SSH access to the server
   - Storage space on the server for the service and repository data
-* A domain with an `A` record pointing to the server IP (Configured at DNS provider)
+- A domain with an `A` record pointing to the server IP (Configured at DNS provider)
 
 Name | TTL | Class | Type | Record
 --- | --- | --- | --- | ---
 `git.example.com` | `1200` | `IN` | `A` | `$IP`
 
-* An email address (e.g. gitea@example.com) configured at your domain (If you want the Gitea service to be able to send email)
+- An email address (e.g. gitea@example.com) configured at your domain (If you want the Gitea service to be able to send email)
   - Make sure to note down the outgoing (SMTP) mail server information (e.g. smtp.example.com:465)
 
 This guide assumes you are using Debian/Ubuntu but it can be adapted to other variations of linux. If you would like to add additional configuration options or help automate some of the setup see [contributing](#contributing) below.
@@ -86,7 +89,7 @@ docker run hello-world
 
 Clone this repository and setup the [.env](#environment) file for your desired configuration.
 
-```
+```shell
 # Clone this repository to your computer
 git clone https://github.com/jwobith/docker-gitea && cd docker-gitea
 
@@ -171,10 +174,10 @@ echo "no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty $(cat /hom
 
 The first time you go to the site Gitea will guide you through the installation wizard.
 
-* Create an administrator user with a strong password.
-* Enter the email address and password for the Gitea server email account.
-* Enter the correct mail server information.
-* The remaining items should stay at the default setting.
+- Create an administrator user with a strong password.
+- Enter the email address and password for the Gitea server email account.
+- Enter the correct mail server information.
+- The remaining items should stay at the default setting.
 
 ## Security
 
@@ -200,9 +203,9 @@ Restart the ssh server with `sudo service ssh restart`.
 
 If a firewall is configured on the host the following external ports must be opened:
   
-* 80/tcp for Web UI HTTP
-* 443/tcp for Web UI HTTPS
-* 22/tcp for SSH
+- 80/tcp for Web UI HTTP
+- 443/tcp for Web UI HTTPS
+- 22/tcp for SSH
 
 On a Debian/Ubuntu server this can be configured using UFW:
 
@@ -249,57 +252,57 @@ Variable | Description | Example
 
 ### Images
 
-* **nginx/nginx**: Nginx docker image on docker hub.
-* **jwilder/docker-gen**: Docker-gen image on docker hub.
-* **jrcs/letsencrypt-nginx-proxy-companion**: Proxy companion docker image on docker hub.
-* **gitea/gitea**: Gitea docker image on docker hub.
-* **postgres:14.5**: PostgreSQL docker image on docker hub.
+- **nginx/nginx**: Nginx docker image on docker hub.
+- **jwilder/docker-gen**: Docker-gen image on docker hub.
+- **jrcs/letsencrypt-nginx-proxy-companion**: Proxy companion docker image on docker hub.
+- **gitea/gitea**: Gitea docker image on docker hub.
+- **postgres:14.5**: PostgreSQL docker image on docker hub.
 
 ### Containers
 
-* **nginx**: Reverse proxy provided by nginx.
-* **nginx-gen**: Container generation for nginx using docker-gen and template `nginx.tmpl`.
-* **nginx-proxy-companion**: Companion to nginx for creating, renewing, and using Let's Encrypt SSL certificates.
-* **gitea**: Gitea, a self-hosted git service written in Go.
-* **db**: PostgreSQL, the database for the git server.
+- **nginx**: Reverse proxy provided by nginx.
+- **nginx-gen**: Container generation for nginx using docker-gen and template `nginx.tmpl`.
+- **nginx-proxy-companion**: Companion to nginx for creating, renewing, and using Let's Encrypt SSL certificates.
+- **gitea**: Gitea, a self-hosted git service written in Go.
+- **db**: PostgreSQL, the database for the git server.
 
 ### Volumes
 
 Local
-* **/var/lib/gitea**: Persistent volume for Gitea data
+- **/var/lib/gitea**: Persistent volume for Gitea data
 
 Named
-* **conf**: Persistent volume for nginx configuration
-* **vhost**: Persistent volume for nginx virtual host configuration
-* **html**: Persistent volume for nginx html data
-* **certs**: Persistent volume for nginx certificate data
-* **postgres**: Persistent volume for PostgreSQL database
+- **conf**: Persistent volume for nginx configuration
+- **vhost**: Persistent volume for nginx virtual host configuration
+- **html**: Persistent volume for nginx html data
+- **certs**: Persistent volume for nginx certificate data
+- **postgres**: Persistent volume for PostgreSQL database
 
 ### Advanced configuration
 
 To make additional configuration changes first shut down the containers with `docker-compose down`
 
-* Edit `docker-compose.yml` to update the Docker service
-* Edit `/var/lib/gitea/gitea/conf/app.ini` to update the Gitea configuration
-* Edit `nginx.tmpl` to update the Nginx configuration
+- Edit `docker-compose.yml` to update the Docker service
+- Edit `/var/lib/gitea/gitea/conf/app.ini` to update the Gitea configuration
+- Edit `nginx.tmpl` to update the Nginx configuration
 
 Restart the containers with `docker-compose up -d`
 
 ## Documentation
 
-* [Gitea Website](https://gitea.io)
-* [Gitea Docker Installation](https://docs.gitea.io/en-us/install-with-docker)
-* [Docker](https://docs.docker.com)
-* [Docker Compose](https://docs.docker.com/compose)
-* [Gitea Repo](https://github.com/go-gitea/gitea)
-* [Gitea Image](https://hub.docker.com/r/gitea/gitea)
-* [Nginx Repo](https://github.com/nginx/nginx)
-* [Nginx Image](https://hub.docker.com/\_/nginx)
-* [docker-gen Repo](https://github.com/jwilder/docker-gen)
-* [docker-gen Image](https://hub.docker.com/r/jwilder/docker-gen)
-* [docker-letsencrypt-nginx-proxy-companion Repo](https://github.com/nginx-proxy/docker-letsencrypt-nginx-proxy-companion)
-* [letsencrypt-nginx-proxy-companion Image](https://hub.docker.com/r/jrcs/letsencrypt-nginx-proxy-companion)
-* If you find any problems please fill out an [issue](https://github.com/jwobith/docker-gitea/issues/new). Thank you!
+- [Gitea Website](https://gitea.io)
+- [Gitea Docker Installation](https://docs.gitea.io/en-us/install-with-docker)
+- [Docker](https://docs.docker.com)
+- [Docker Compose](https://docs.docker.com/compose)
+- [Gitea Repo](https://github.com/go-gitea/gitea)
+- [Gitea Image](https://hub.docker.com/r/gitea/gitea)
+- [Nginx Repo](https://github.com/nginx/nginx)
+- [Nginx Image](https://hub.docker.com/\_/nginx)
+- [docker-gen Repo](https://github.com/jwilder/docker-gen)
+- [docker-gen Image](https://hub.docker.com/r/jwilder/docker-gen)
+- [docker-letsencrypt-nginx-proxy-companion Repo](https://github.com/nginx-proxy/docker-letsencrypt-nginx-proxy-companion)
+- [letsencrypt-nginx-proxy-companion Image](https://hub.docker.com/r/jrcs/letsencrypt-nginx-proxy-companion)
+- If you find any problems please fill out an [issue](https://github.com/jwobith/docker-gitea/issues/new). Thank you!
 
 ## Contributing
 

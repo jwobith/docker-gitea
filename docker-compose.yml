@@ -80,6 +80,7 @@ services:
       - "${VIRTUAL_PORT}"
     ports:
       - "127.0.0.1:2222:22"
+      - "127.0.0.1:3000:3000"
     volumes:
       - /var/lib/gitea:/data
       - /etc/timezone:/etc/timezone:ro

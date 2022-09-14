@@ -87,7 +87,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
   db:
     restart: unless-stopped
-    image: postgres:9.6
+    image: postgres:14.5
     container_name: db
     environment:
       POSTGRES_DB: ${DB_NAME}

@@ -253,7 +253,7 @@ Variable | Description | Example
 * **jwilder/docker-gen**: Docker-gen image on docker hub.
 * **jrcs/letsencrypt-nginx-proxy-companion**: Proxy companion docker image on docker hub.
 * **gitea/gitea**: Gitea docker image on docker hub.
-* **postgres:9.6**: PostgreSQL docker image version 9.6 on docker hub.
+* **postgres:14.5**: PostgreSQL docker image on docker hub.
 
 ### Containers
 
